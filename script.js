@@ -1,3 +1,4 @@
+// Mengambil komponen HTML
 const playlistSongs = document.getElementById("playlist-songs");
 const playButton = document.getElementById("play");
 const pauseButton = document.getElementById("pause");
@@ -5,6 +6,7 @@ const nextButton = document.getElementById("next");
 const previousButton = document.getElementById("previous");
 const shuffleButton = document.getElementById("shuffle");
 
+// Membuat array dengan object yang berisi lagu
 const allSongs = [
   {
     id: 0,
@@ -80,7 +82,20 @@ const allSongs = [
 
 const audio = new Audio();
 let userData = {
-  songs: [...allSongs],
+  songs: [...allSongs], //spread operator (for copy all elements from one array into another.)
+
+  //To handle the current song's information and track its playback time,
   currentSong: null,
   songCurrentTime: 0,
+};
+
+const renderSongs = (array) => {
+  const songsHTML = array.map((song) => {
+    return `
+        <li id="song-${song.id}" class="playlist-song">
+  
+        
+        </li>
+        `;
+  });
 };

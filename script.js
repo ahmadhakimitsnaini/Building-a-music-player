@@ -117,8 +117,8 @@ const sortSongs = () => {
   // sort the songs in alphabetical order by title, and pass in a compare callback function into sort() method.
   userData?.songs.sort((a, b) => {
     if (a.title < b.title) {
-      //The reason why this example is returning numbers is because the sort() method is expecting a number to be returned. If you return a negative number, the first item is sorted before the second item.
       return -1;
+      //The reason why this example is returning numbers is because the sort() method is expecting a number to be returned. If you return a negative number, the first item is sorted before the second item.
     }
   });
 };

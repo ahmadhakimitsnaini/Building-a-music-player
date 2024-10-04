@@ -89,6 +89,20 @@ let userData = {
   songCurrentTime: 0,
 };
 
+const playSong = (id) => {
+  const song = userData?.songs.find((song) => song.id === id);
+  audio.src = song.src;
+  audio.title = song.title;
+
+  if (userData?.currentSong === null || userData?.currentSong.id !== song.id) {
+    audio.currentTime = 0;
+  } else {
+    audio.currentTime = userData?.songCurrentTime;
+  }
+
+  userData.currentSong = song;
+};
+
 //Function to display the songs in the UI (User Interface)
 const renderSongs = (array) => {
   //map method berguna untuk membuat array baru dengan operasi tertentu tanpa harus melakukan perubahan pada array lama.
@@ -120,7 +134,14 @@ const sortSongs = () => {
       return -1;
       //The reason why this example is returning numbers is because the sort() method is expecting a number to be returned. If you return a negative number, the first item is sorted before the second item.
     }
+    if (a.title > b.title) {
+      return 1;
+    }
+    return 0;
   });
+  return userData?.songs;
 };
 
-renderSongs(userData?.songs);
+renderSongs(sortSong());
+
+// Javascript kocak

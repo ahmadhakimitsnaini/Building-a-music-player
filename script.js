@@ -89,6 +89,7 @@ let userData = {
   songCurrentTime: 0,
 };
 
+// Function for play the song
 const playSong = (id) => {
   const song = userData?.songs.find((song) => song.id === id);
   audio.src = song.src;
@@ -101,6 +102,17 @@ const playSong = (id) => {
   }
 
   userData.currentSong = song;
+  playButton.classList.add("playing");
+
+  audio.play();
+};
+
+// Function for pause the music
+const pauseSong = () => {
+  userData.songCurrentTime = audio.currentTime;
+
+  playButton.classList.remove("playing");
+  audio.pause();
 };
 
 //Function to display the songs in the UI (User Interface)
@@ -110,7 +122,7 @@ const renderSongs = (array) => {
     .map((song) => {
       return `
         <li id="song-${song.id}" class="playlist-song">
-        <button class="playlist-song-info">
+        <button class="playlist-song-info" onclick="${song.id}">
           <span class="playlist-song-title">${song.title}</span>
           <span class="playlist-song-artist">${song.artist}</span>
           <span class="playlist-song-duration">${song.duration}</span>
@@ -125,6 +137,21 @@ const renderSongs = (array) => {
     .join(""); // The join() method is used to concatenate all the elements of an array into a single string. It takes an optional parameter called a separator which is used to separate each element of the array.
   playlistSongs.innerHTML = songsHTML;
 };
+
+// function untuk memutar kembali musik sebelumnya dan musik setelah nya
+const getCurrentSongIndex = () => {};
+
+// In previous steps already built out the functionality for playing a song, and now create functionality to the play button so that it will play the current song when it is clicked on.
+playButton.addEventListener("click", () => {
+  if (userData?.currentSong === null) {
+    playSong(userData?.songs[0].id);
+  } else {
+    playSong(userData?.currentSong.id);
+  }
+});
+
+// memanggil function pasuseSong ke dalam pauseButton
+pauseButton.addEventListener("click", pauseSong);
 
 //  Function sort these music list in alphabetical order by title.
 const sortSongs = () => {
@@ -145,3 +172,6 @@ const sortSongs = () => {
 renderSongs(sortSong());
 
 // Javascript kocak
+// 1. Memahami code yang menggunakan ?
+// 2. Memahami penggunaan . dalam keseluruhan code
+// 3.

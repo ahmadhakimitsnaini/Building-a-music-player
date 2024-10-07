@@ -114,6 +114,29 @@ const pauseSong = () => {
   audio.pause();
 };
 
+// Function for play the next music
+const playNextSong = () => {
+  if (userData?.currentSong === null) {
+    playSong(userData?.songs[0].id);
+  } else {
+    const currentSongIndex = getCurrentSongIndex();
+    const nextSong = userData?.songs[currentSongIndex + 1];
+
+    playSong(nextSong.id);
+  }
+};
+
+// Function for play previous music
+const playPreviousSong = () => {
+  if (userData?.currentSong === null) {
+    return;
+  } else {
+    const currentSongIndex = getCurrentSongIndex();
+    const previousSong = userData?.songs[currentSongIndex - 1];
+    playSong(previousSong.id);
+  }
+};
+
 //Function to display the songs in the UI (User Interface)
 const renderSongs = (array) => {
   //map method berguna untuk membuat array baru dengan operasi tertentu tanpa harus melakukan perubahan pada array lama.
@@ -138,7 +161,9 @@ const renderSongs = (array) => {
 };
 
 // function untuk memutar kembali musik sebelumnya dan musik setelah nya
-const getCurrentSongIndex = () => {};
+const getCurrentSongIndex = () => {
+  return userData?.songs.indexOf(userData?.currentSong);
+};
 
 // In previous steps already built out the functionality for playing a song, and now create functionality to the play button so that it will play the current song when it is clicked on.
 playButton.addEventListener("click", () => {
@@ -149,8 +174,12 @@ playButton.addEventListener("click", () => {
   }
 });
 
-// memanggil function pasuseSong ke dalam pauseButton
+// Retrieve pause song function
 pauseButton.addEventListener("click", pauseSong);
+// Retrieve next song function
+nextButton.addEventListener("click", playNextSong);
+// Retrieve previous song function
+previousButton.addEventListener("click", playPreviousSong);
 
 //  Function sort these music list in alphabetical order by title.
 const sortSongs = () => {

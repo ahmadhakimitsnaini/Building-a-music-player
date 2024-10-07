@@ -100,7 +100,6 @@ const playSong = (id) => {
   } else {
     audio.currentTime = userData?.songCurrentTime;
   }
-
   userData.currentSong = song;
   playButton.classList.add("playing");
 
@@ -122,7 +121,7 @@ const renderSongs = (array) => {
     .map((song) => {
       return `
     <li id="song-${song.id}" class="playlist-song">
-      <button class="playlist-song-info" onclick="${song.id}">
+    <button class="playlist-song-info" onclick="playSong(${song.id})">
         <span class="playlist-song-title">${song.title}</span>
         <span class="playlist-song-artist">${song.artist}</span>
         <span class="playlist-song-duration">${song.duration}</span>
@@ -169,7 +168,7 @@ const sortSongs = () => {
   return userData?.songs;
 };
 
-renderSongs(sortSong());
+renderSongs(sortSongs());
 
 /* Javascript kocak
  1. Memahami code yang menggunakan ?

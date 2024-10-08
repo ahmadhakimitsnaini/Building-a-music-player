@@ -103,6 +103,8 @@ const playSong = (id) => {
   userData.currentSong = song;
   playButton.classList.add("playing");
   highlightCurrentSong();
+  setPlayerDisplay();
+  setPlayButtonAccessibleText();
   audio.play();
 };
 
@@ -137,6 +139,19 @@ const playPreviousSong = () => {
   }
 };
 
+// Function for shuffle
+const shuffle = () => {
+  userData?.songs.sort(() => Math.random() - 0.5);
+  userData.currentSong = null;
+  userData.songCurrentTime = 0;
+
+  renderSongs(userData?.songs);
+  pauseSong();
+  setPlayerDisplay();
+  setPlayButtonAccessibleText();
+};
+
+// function to display the current song title and artist in the player display
 const setPlayerDisplay = () => {
   const playingSong = document.getElementById("player-song-title");
   const songArtist = document.getElementById("player-song-artist");
@@ -183,10 +198,18 @@ const renderSongs = (array) => {
   playlistSongs.innerHTML = songsHTML;
 };
 
-// function untuk memutar kembali musik sebelumnya dan musik setelah nya
-const getCurrentSongIndex = () => {
-  return userData?.songs.indexOf(userData?.currentSong);
+const setPlayButtonAccessibleText = () => {
+  const song = userData?.currentSong || userData?.songs[0];
+
+  playButton.setAttribute(
+    "aria-label",
+    song?.title ? `Play ${song.title}` : "Play"
+  );
 };
+
+// function untuk memutar kembali musik sebelumnya dan musik setelah nya
+const getCurrentSongIndex = () =>
+  userData?.songs.indexOf(userData?.currentSong);
 
 // In previous steps already built out the functionality for playing a song, and now create functionality to the play button so that it will play the current song when it is clicked on.
 playButton.addEventListener("click", () => {

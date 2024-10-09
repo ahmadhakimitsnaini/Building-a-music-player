@@ -102,6 +102,7 @@ const playSong = (id) => {
   }
   userData.currentSong = song;
   playButton.classList.add("playing");
+
   highlightCurrentSong();
   setPlayerDisplay();
   setPlayButtonAccessibleText();
@@ -135,6 +136,7 @@ const playPreviousSong = () => {
   } else {
     const currentSongIndex = getCurrentSongIndex();
     const previousSong = userData?.songs[currentSongIndex - 1];
+
     playSong(previousSong.id);
   }
 };
@@ -172,6 +174,15 @@ const deleteSong = (id) => {
 
     resetButton.id = "reset";
     resetButton.ariaLabel = "Reset playlist";
+    resetButton.appendChild(resetText);
+    playlistSongs.appendChild(resetButton);
+
+    resetButton.addEventListener("click", () => {
+      userData.songs = [...allSongs]; //To reset the playlist to its original state, spread allSongs into an array and assign it to userData.songs.
+      renderSongs(sortSongs()); //Call the renderSongs() function with sortSongs() as an argument to render the songs again in alphabetical order.
+      setPlayButtonAccessibleText(); //Call the setPlayButtonAccessibleText() function to update the play button's accessible text.
+      resetButton.remove(); //Remove the reset button from the playlist by calling the remove() method on the resetButton variable.
+    });
   }
 };
 
@@ -181,6 +192,7 @@ const setPlayerDisplay = () => {
   const songArtist = document.getElementById("player-song-artist");
   const currentTitle = userData?.currentSong?.title;
   const currentArtist = userData?.currentSong?.artist;
+
   playingSong.textContent = currentTitle ? currentTitle : "";
   songArtist.textContent = currentArtist ? currentArtist : "";
 };
@@ -219,6 +231,7 @@ const renderSongs = (array) => {
     `;
     })
     .join(""); // The join() method is used to concatenate all the elements of an array into a single string. It takes an optional parameter called a separator which is used to separate each element of the array.
+
   playlistSongs.innerHTML = songsHTML;
 };
 
@@ -250,6 +263,24 @@ pauseButton.addEventListener("click", pauseSong);
 nextButton.addEventListener("click", playNextSong);
 // Call previous song function
 previousButton.addEventListener("click", playPreviousSong);
+// call shuffle song function
+shuffleButton.addEventListener("click", shuffle);
+
+audio.addEventListener("ended", () => {
+  const currentSongIndex = getCurrentSongIndex();
+  const nextSongExists = userData?.songs[currentSongIndex + 1] !== undefined;
+
+  if (nextSongExists) {
+    playNextSong();
+  } else {
+    userData.currentSong = null;
+    userData.songCurrentTime = 0;
+    pauseSong();
+    setPlayerDisplay();
+    highlightCurrentSong();
+    setPlayButtonAccessibleText();
+  }
+});
 
 //  Function sort these music list in alphabetical order by title.
 const sortSongs = () => {
@@ -259,16 +290,19 @@ const sortSongs = () => {
       return -1;
       //The reason why this example is returning numbers is because the sort() method is expecting a number to be returned. If you return a negative number, the first item is sorted before the second item.
     }
+
     if (a.title > b.title) {
       return 1;
     }
+
     return 0;
   });
+
   return userData?.songs;
 };
 
 renderSongs(sortSongs());
-
+setPlayButtonAccessibleText();
 /* Javascript kocak
  1. Memahami code yang menggunakan ?
  2. Memahami penggunaan . dalam keseluruhan code
